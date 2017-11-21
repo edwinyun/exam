@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Homepage</title>
+</head>
+<body>
+    <p align="right"><a href='/logout'>Logout</a></p>
+    <h2>Welcome, {{request.session.first_name}}!</h2>
+
+    <h4>Your Favorites:</h4>
+
+    {%for quote in favorite_quotes%}
+        <p>{{quote.quoted_by}}: "{{quote.message}}"</p> 
+        <a href='/main/removefromlist/{{quote.id}}'>Remove From My List</a>
+        <p>Posted By: <a href='/main/items/{{quote.id}}'>{{quote.created_by.first_name}}</a></p>
+    {%endfor%}
+
+    <h4>Quotable Quotes:</h4>
+    {%for quote in all_quotes%}
+        <p>{{quote.quoted_by}}: "{{quote.message}}"</p> 
+        <a href='/main/addtolist/{{quote.id}}'>Add to My list</a>
+        <p>Posted By: <a href='/main/items/{{quote.id}}'>{{quote.created_by.first_name}}</a></p>
+       
+    {%endfor%}
+
+
+    <!-- #########CONTRIBUTE A QUOTE############### -->
+    <h4>Contribute a Quote:</h4>
+    <p>{% if messages %}</p>
+    <p>{% for message in messages %}</p>
+        <p style='color:red'>{{ message }}</p>
+    <p>{% endfor %}</p>
+<p>{% endif %}</p>
+    <form action='/main/create' method='POST'>
+        {% csrf_token %}
+        <p>Quoted By:</p>
+        <input type='text' name='quoted_by'>
+        <p>Message:</p>
+        <textarea rows="4" cols="50" name='message'></textarea>
+        <br>
+        <br>
+        <input type='submit' value="Submit">
+    </form>
+
+
+
+
+
+
+    
+</body>
+</html>
